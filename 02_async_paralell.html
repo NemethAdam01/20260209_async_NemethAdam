@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function resolve(val)
+        {
+            return new Promise((resolve) => { 
+                setTimeout(resolve, 2000, val *2)
+            });
+        }
+        async function serial() {
+            const a = await resolve(1);
+            const b = await resolve(2);
+            const c = await resolve(3);
+            return a + b + c;
+        }
+        serial().then(console.log)
+        async function paralell() {
+            const promiseA = resolve(10);
+            const prommiseB = resolve(20);
+            const promiseC = resolve(30);
+            return (await promiseA) + (await prommiseB) + (await promiseC);
+        }
+        paralell().then(console.log)
+
+        async function execution(funct) {
+            const start = performance.now();
+            await funct();
+            const end = performance.now();
+            return end - start;
+        }
+        execution(serial).then(console.log)
+    </script>
+</body>
+</html>
