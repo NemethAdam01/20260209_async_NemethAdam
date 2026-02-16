@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p id="post_valasz"></p>
+    <form id="nev_form">
+        <label for="nev">Név</label>
+        <input type="text" id="nev" name="nev" required>
+        <button type="submit">Keresés</button>
+    </form>
+    <script>
+        async function nevnapPost(nev) {
+            const data = {
+                "name": nev
+              };
+              const response = await
+                  fetch("https://nameday.abalin.net/api/V2/getname",{
+                      method: "POST",
+                      headers:{
+                          "Accept": 'application/json',
+                          "Content-Type": 'application/json'
+                      },
+                      body: JSON.stringify(data)
+                  });
+
+                  const nevek = await response.json();
+                  console.log(nevek);
+                  nevek_str = "";
+                  for (const prop in nevek.data) {
+                    console.log(prop);
+                    nevek_str += (`${prop}: ${nevek.data[prop]} <br>`);
+                  }
+                  document.getElementById("post_valasz").innerHTML = nevek_str;
+        }
+        function nevnapMegjelenites(event){
+            event.preventDefault();
+            const nev = document.getElementById("nev").value;
+            console.log(nev);
+            nevnapPost(nev);
+        }
+        document.getElementById("nev_form").addEventListener("submit", nevnapMegjelenites)
+       
+    </script>
+</body>
+</html>
